@@ -1,4 +1,4 @@
-// 06 May 25 - Day 01 Skills Boot camp
+// 06 May 25 - Day 01 Skills Bootcamp
 
 // Variables
 let age = 35;
@@ -38,6 +38,19 @@ const searchTerm = "dog";
 const indexOfFirst = paragraph.indexOf(searchTerm);
 
 console.log(`The index of the first "${searchTerm}" is ${indexOfFirst}`);
+
+// ---
+
+const mayfairPrice = 400
+
+let money = 200
+
+if (money >= mayfairPrice) {
+    console.log ("Enough funds to buy Mayfair");
+}
+else {
+    console.log ("Not enough funds to buy Mayfair");
+}
 
 
 
