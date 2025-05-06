@@ -1,7 +1,4 @@
-// Day 01 JS
-// :Week 01 - Recapping on javascript
-
-// :Day 01 Skills Bootcamp
+// 06 May 25 - Day 01 Skills Bootcamp
 
 // Variables
 let age = 35;
@@ -26,5 +23,10 @@ if (age > 18) {
 
 console.log("Age:"  + age);
 
-// --
-
+//
+const plans = "Saturday night"
+if (plans.startsWith("Sat")) {
+    console.log("Yes");
+} else {
+    console.log("No");
+}
