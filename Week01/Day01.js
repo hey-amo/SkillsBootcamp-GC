@@ -1,4 +1,4 @@
-// 06 May 25 - Day 01 Skills Bootcamp
+// 06 May 25 - Day 01 Skills Boot camp
 
 // Variables
 let age = 35;

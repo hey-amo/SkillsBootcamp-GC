@@ -12,6 +12,7 @@
             line-height: 1.25rem;
             margin: 1rem;
         }
+        #msg { background: green; }
     </style>
 
     <script>
@@ -21,15 +22,26 @@
         function checkAge() {
             age = document.getElementById("age");
 
-            console.log(`The value of age is ${age}`);
-            
+            age.addEventListener("change", function() {
+                console.log("You entered an age");
+                console.log(`The value of age is ${age.value}`);    
+            })
+                        
             isDiscounted = false;
 
-            if (parseInt(age) >= 60) {
+            if (parseInt(age.value) >= 60) {
+                alert("discounted");
                 console.log("Is discounted -> true");
                 isDiscounted = true;
+                document.getElementById("msg").style.display = 'block';
+            } else {
+                alert("no discount");
+                console.log("no discount");
+                document.getElementById("msg").style.display = 'none';
             }
         }
+
+        checkAge();
     </script>
 </head>
 <body>
@@ -42,7 +54,11 @@
         If you are aged above 60 you can claim a discount.
     </p>
 
-    <form action="#">
+    <p id="msg" style="display:none;">
+        Congrats, you will be discounted.
+    </p>
+
+    <form>
         <p><label for="name">Name:</label> 
             <input type="text" id="name" name="name">
         </p>
