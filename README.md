@@ -3,7 +3,9 @@ May 2025 - Skills bootcamp
 
 To contain work from the `Gateshead College Full Stack Development Level 5` course.
 
---
+---
+
+# Known weeks
 
 - Week 01 - Recapping on javascript
 - Week 02 - API and hand shaking
