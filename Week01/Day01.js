@@ -30,3 +30,14 @@ if (plans.startsWith("Sat")) {
 } else {
     console.log("No");
 }
+
+// indexOf example
+const paragraph = "This is a dog, not a cat!";
+
+const searchTerm = "dog";
+const indexOfFirst = paragraph.indexOf(searchTerm);
+
+console.log(`The index of the first "${searchTerm}" is ${indexOfFirst}`);
+
+
+
