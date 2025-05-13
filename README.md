@@ -5,7 +5,7 @@ To contain work from the `Gateshead College Full Stack Development Level 5` cour
 
 ---
 
-# Known weeks
+# Weeks
 
 - Week 01 - Recapping on javascript
 - Week 02 - API and hand shaking
@@ -14,3 +14,8 @@ To contain work from the `Gateshead College Full Stack Development Level 5` cour
 - Week 05 - Interface design wireframes
 - Assignment
 - Week 06 - Database
+
+
+---
+
+![alt text](schedule.png "Schedule")
