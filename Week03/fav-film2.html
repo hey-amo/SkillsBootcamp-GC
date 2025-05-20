@@ -1,7 +1,13 @@
-<!DOCTYPE html>
+<!DOCTYPE html lang="en-gb">
 <html>
 <head>
-<title>Favorite Film Info</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favorite Film Info</title>
+  <style>
+    body { font: 14px/1.5em Arial, Helvetica, sans-serif; margin: 1rem; }
+    .status { font-weight: 200; }
+  </style>
 </head>
 <body>
  
@@ -14,33 +20,55 @@
 <script>
 
 function getMovie() {
-
   const title = document.getElementById("movieTitle").value;
-
   const apiKey = 'e4e9caf9'; // Replace with your actual OMDb API key
-
-  const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${apiKey}`;
+  const url = `https://www.omdbapi.com/?s=${encodeURIComponent(title)}&apikey=${apiKey}`;
  
   fetch(url)
-
     .then(response => response.json())
-
     .then(data => {
 
       if (data.Response === "True") {
 
-        document.getElementById("movieInfo").innerHTML = `
-<h3>${data.Title} (${data.Year})</h3>
-<img src="${data.Poster}" alt="Poster" width="200"><br>
-<strong>Genre:</strong> ${data.Genre}<br>
-<strong>Plot:</strong> ${data.Plot}<br>
-<strong>IMDB Rating:</strong> ${data.imdbRating}
-        `;
+        console.log(data.Search);
+        
+        if (data.Search.count == 0) {
+          console.log("No results found");
+        } else {
+
+          console.log(`Found ${data.Search.count} results`);
+
+          // clear the inner html
+          document.getElementById("movieInfo").innerHTML = "";
+
+          data.Search.forEach(movie => {
+            printMovieRow(movie);
+          });
+        }
+
+        function printMovieRow(movie) {        
+          // make a div
+          const movieDivElement = document.createElement("div"); 
+
+          // make inner html
+          movieDivElement.innerHTML = `
+            <h3>${movie.Title} (${movie.Year})</h3>
+            <p id="poster">
+            <img src="${movie.Poster}" alt="Poster" width="200" alt="Poster for movie">
+            </p>
+            <p><strong>Genre:</strong> ${movie.Genre || 'Unknown genre'}</p>
+            <p><strong>Plot:</strong> ${movie.Plot || 'Unknown plot'}</p>
+            <p><strong>IMDB Rating:</strong> ${movie.imdbRating || 'Unknown rating'}</p>
+            <hr>
+            `;
+
+            // append the div to the info
+            document.getElementById("movieInfo").append(movieDivElement)
+        }
 
       } else {
 
-        document.getElementById("movieInfo").innerHTML = "Movie not found!";
-
+        document.getElementById("movieInfo").innerHTML = "<p class='status'>Movie not found!</p>";
       }
 
     })
