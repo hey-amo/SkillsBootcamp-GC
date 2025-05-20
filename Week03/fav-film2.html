@@ -21,7 +21,7 @@
 
 function getMovie() {
   const title = document.getElementById("movieTitle").value;
-  const apiKey = 'e4e9caf9'; // Replace with your actual OMDb API key
+  const apiKey = ''; // Replace with your actual OMDb API key
   const url = `https://www.omdbapi.com/?s=${encodeURIComponent(title)}&apikey=${apiKey}`;
  
   fetch(url)
