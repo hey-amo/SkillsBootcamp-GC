@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Favorite Film Info</title>
+</head>
+<body>
+ 
+<h2>Find Your Favorite Film</h2>
+<input type="text" id="movieTitle" placeholder="Enter movie title">
+<button onclick="getMovie()">Search</button>
+ 
+<div id="movieInfo" style="margin-top:20px;"></div>
+ 
+<script>
+
+function getMovie() {
+
+  const title = document.getElementById("movieTitle").value;
+
+  const apiKey = 'e4e9caf9'; // Replace with your actual OMDb API key
+
+  const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${apiKey}`;
+ 
+  fetch(url)
+
+    .then(response => response.json())
+
+    .then(data => {
+
+      if (data.Response === "True") {
+
+        document.getElementById("movieInfo").innerHTML = `
+<h3>${data.Title} (${data.Year})</h3>
+<img src="${data.Poster}" alt="Poster" width="200"><br>
+<strong>Genre:</strong> ${data.Genre}<br>
+<strong>Plot:</strong> ${data.Plot}<br>
+<strong>IMDB Rating:</strong> ${data.imdbRating}
+        `;
+
+      } else {
+
+        document.getElementById("movieInfo").innerHTML = "Movie not found!";
+
+      }
+
+    })
+
+    .catch(error => {
+
+      console.error('Error:', error);
+
+      document.getElementById("movieInfo").innerHTML = "Failed to fetch movie data.";
+
+    });
+
+}
+</script>
+ 
+</body>
+</html>
