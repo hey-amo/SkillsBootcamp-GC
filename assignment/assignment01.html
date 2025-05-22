@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Amarjit">
+	<title>Full Stack Skills Bootcamp - Assignment Part 1</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen, print">
+</head>
+<body>
+
+<section id="panel" class="collapsible">
+	<h1>Full Stack Skills Bootcamp - Gateshead College</h1>
+
+	<h3>Assignment - Part 1</h3>
+
+	<h4>Task:</h4>
+
+	<p>
+	Using a web-based technology: Express/Node/EJS create information relating to your favourite tv/movie/radio shows (you choose) or your own topic within a record format.
+	</p>
+
+	<p>
+	You will need to add some additional information like: Title, seasons, episodes, year, cast, type, rating, poster, and directors etc..
+	</p>
+
+	<p>
+	Display the data/record on web browser by using either node, express or EJS, remember you need to show an images & code listing to show it is working.
+	</p>
+
+</section>
+
+<div id="movieInfo"></div>
+
+
+<script type="text/javascript">
+	// Movie record
+	var movie = {
+		title: "Batman Begins",
+		year: 2005,
+		type: "Movie",
+		director: "Christopher Nolan",
+		imdbRating: 8.2,
+		poster: "https://m.media-amazon.com/images/M/MV5BODIyMDdhNTgtNDlmOC00MjUxLWE2NDItODA5MTdkNzY3ZTdhXkEyXkFqcGc@._V1_SX300.jpg",
+		cast: [
+			"Christian Bale",
+			"Michael Caine",
+			"Liam Neeson",
+			"Katie Holmes",
+			"Gary Oldman"
+		]
+	};
+
+ 	// Build a cast list using a for-loop
+    var castList = "<ul>";
+    for (var i = 0; i < movie.cast.length; i++) {
+      castList += "<li>" + movie.cast[i] + "</li>";
+    }
+    castList += "</ul>";
+
+	// html content
+	var content = `
+	<p><img src="${movie.poster}" alt="Poster"></p>
+	<div class="details">
+		<h2>${movie.title}, ${movie.year}</h2>
+		<p>Director: ${movie.director}</p>
+		<p>IMDB Rating: ${movie.imdbRating}</p>
+		<p>Cast: ${castList}</p>
+	</div>
+	`;
+
+    // Insert the html
+	document.getElementById("movieInfo").innerHTML = content;
+</script>
+
+
+</body>
+</html>
