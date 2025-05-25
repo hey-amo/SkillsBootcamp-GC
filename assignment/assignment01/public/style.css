@@ -1,0 +1,21 @@
+/**
+ * Full Stack Skills Bootcamp - Gateshead College
+ * Stylesheet
+ * Media: Screen, print
+ */
+body { 
+	font: 14px/1.5em Arial, Helvetica, sans-serif; margin: 1rem; 
+}
+p { 
+	margin-bottom: 1em; 
+}
+#movieInfo { 
+	border-top: 1px solid #ccc; 
+}
+section#panel { 
+	background-color: #fdf5e6; padding: 0.5em; 
+}
+img {
+  max-width: 200px;
+  border: 1px solid #ccc;
+}

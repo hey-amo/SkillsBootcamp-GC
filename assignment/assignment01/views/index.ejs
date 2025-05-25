@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= movie.title %> - Info</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1><%= movie.title %> (<%= movie.year %>)</h1>
+    <img src="<%= movie.poster %>" alt="Poster for <%= movie.title %>">
+    <ul>
+        <li><strong>Type:</strong> <%= movie.type %></li>
+        <li><strong>Director:</strong> <%= movie.director %></li>
+        <li><strong>IMDb Rating:</strong> <%= movie.imdbRating %></li>
+        <% if (movie.seasons) { %><li><strong>Seasons:</strong> <%= movie.seasons %></li><% } %>
+        <% if (movie.episodes) { %><li><strong>Episodes:</strong> <%= movie.episodes %></li><% } %>
+        <li><strong>Cast:</strong>
+            <ul>
+                <% movie.cast.forEach(person => { %>
+                    <li><%= person %></li>
+                <% }); %>
+            </ul>
+        </li>
+    </ul>
+</body>
+</html>
