@@ -1,7 +1,7 @@
-// Assignment-01 using express
+// Assignment-01
 // Note: Requires Node/Express, EJS
+//
 const express = require("express");
-
 const app = express();
 const port = 3000;
 
