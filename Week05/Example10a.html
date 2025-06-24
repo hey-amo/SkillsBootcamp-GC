@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* For width smaller than 400px: */
+body {
+  background-repeat: no-repeat;
+  background-image: url('https://m.media-amazon.com/images/I/71XVTfvvs1L._AC_SS65_.jpg?auto=compress&cs=tinysrgb&w=600'); 
+}
+ 
+/* For width 400px and larger: */
+@media screen and (min-width: 400px) {
+  body { 
+     background-image: url('https://images.pexels.com/photos/4271683/pexels-photo-4271683.jpeg?auto=compress&cs=tinysrgb&w=500');
+  }
+}
+ 
+ 
+@media screen and (max-width: 1000px){   
+    body {
+  background-repeat: no-repeat;
+  background-image: url('https://m.media-amazon.com/images/I/71XVTfvvs1L._AC_SS65_.jpg?auto=compress&cs=tinysrgb&w=600'); 
+}
+ 
+}
+ 
+@media screen and (min-width: 400px) {      
+    #main-img{      
+       content:url("https://m.media-amazon.com/images/I/71XVTfvvs1L._AC_SS65_.jpg?auto=compress&cs=tinysrgb&w=600");
+     } 
+} 
+</style>
+</head>
+<body>
+ 
+<p style="margin-top:360px;">Resize the browser width and the background image will change at 400px.</p>
+ 
+</body>
+</html>

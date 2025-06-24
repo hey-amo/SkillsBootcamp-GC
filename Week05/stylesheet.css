@@ -1,0 +1,43 @@
+
+
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+  margin: 0;
+  padding: 1em;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+article {
+  width: 940px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+article::after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.content {
+  float: right;
+  width: 700px;
+  color: #ccc;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+aside {
+  float: left;
+  width: 200px;
+  color: #ccc;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-radius: 4px;
+  padding: 10px;
+}
