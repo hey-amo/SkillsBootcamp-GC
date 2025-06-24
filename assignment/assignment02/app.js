@@ -3,8 +3,9 @@
 //
 const express = require("express");
 const app = express();
-const MongoClient = require('mongodb').MongoClient;
-const bodyParser = require('express').json;
+const { MongoClient } = require('mongodb');
+const mongodb = require('mongodb');
+const ObjectId = mongodb.ObjectId;
 const port = 3000;
 const url = 'mongodb://localhost:27017'; // MongoDB connection string
 const dbName = 'moviesdb';               // Database name
@@ -14,7 +15,7 @@ app.use(express.json());
 
 let db;
 
-// Connect to MongoDB
+// Connect to MongoDB (modern async/await version)
 async function connectToMongoDB() {
     try {
         const client = await MongoClient.connect(url);
@@ -26,10 +27,10 @@ async function connectToMongoDB() {
     }
 }
 
+// Initialize database connection
 connectToMongoDB();
 
-
-// Sample movie - Record structure
+// Movie Record Structure (example)
 const sampleMovie = {
     title: "Batman Begins",
     year: 2005,
@@ -168,7 +169,7 @@ app.delete('/movies/:id', async (req, res) => {
     }
 });
 
-// Test insert
+// Route to insert sample movie for testing
 app.post('/sample-movie', async (req, res) => {
     try {
         const result = await db.collection('movies').insertOne(sampleMovie);
@@ -182,10 +183,7 @@ app.post('/sample-movie', async (req, res) => {
     }
 });
 
-
-// ------------------
-
-// # App running
+// App running
 app.listen(port, () => {
     console.log(`App running on http://localhost:${port}`);
 });
