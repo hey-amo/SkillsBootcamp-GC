@@ -9,10 +9,12 @@ const ObjectId = mongodb.ObjectId;
 const port = 3000;
 const url = 'mongodb://localhost:27017'; // MongoDB connection string
 const dbName = 'moviesdb';               // Database name
+const path = require("path");
 
 // Set EJS as templating engine
 app.set('view engine', 'ejs');
 app.set('views', './views');
+app.use(express.static(path.join(__dirname, "public")));
 
 // Parse JSON requests and form data
 app.use(express.json());
@@ -36,6 +38,8 @@ async function startServer() {
         process.exit(1);
     }
 }
+
+
 
 // Initialize everything
 startServer();
