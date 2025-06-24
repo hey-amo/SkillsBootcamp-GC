@@ -1,5 +1,5 @@
 // Assignment02 - app.js
-// Note: Requires Node/Express, EJS
+// Note: Requires Node/Express, MongoDB
 //
 const express = require("express");
 const app = express();
@@ -10,8 +10,15 @@ const port = 3000;
 const url = 'mongodb://localhost:27017'; // MongoDB connection string
 const dbName = 'moviesdb';               // Database name
 
+
+// Set EJS as templating engine
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
 // Parse JSON requests
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 let db;
 
@@ -60,21 +67,46 @@ app.get('/debug/movies', async (req, res) => {
     }
 });
 
-// HOME - API status
-app.get('/', (req, res) => {
-    res.send('Simple Movie API is running');
+// HOME - Show all movies
+app.get('/', (req, res) => {    
+     try {
+        console.log('Simple Movie API is running');
+        const movies = await db.collection('movies').find({}).toArray();
+        res.render('movies', { 
+            movies: movies,
+            count: movies.length 
+        });
+    } catch (error) {
+        res.render('movies', { 
+            movies: [],
+            count: 0,
+            error: error.message 
+        });
+    }
 });
 
 // CREATE - Insert a new movie
 app.post('/movies', async (req, res) => {
+     const movie = req.body;
     try {
-        const movie = req.body;
+        // Convert cast string to array if it exists
+        if (movie.cast && typeof movie.cast === 'string') {
+            movie.cast = movie.cast.split(',').map(actor => actor.trim());
+        }
+        
         const result = await db.collection('movies').insertOne(movie);
-        res.status(201).json({
-            message: 'Movie created successfully',
-            id: result.insertedId,
-            movie: movie
-        });
+        
+        // If request came from HTML form, redirect back to home page
+        if (req.get('Content-Type') && req.get('Content-Type').includes('application/x-www-form-urlencoded')) {
+            res.redirect('/');
+        } else {
+            // JSON API response
+            res.status(201).json({
+                message: 'Movie created successfully',
+                id: result.insertedId,
+                movie: movie
+            });
+        }
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -95,7 +127,7 @@ app.get('/movies', async (req, res) => {
 
 // READ - Get a single movie by ID
 app.get('/movies/:id', async (req, res) => {
-    try {
+     try {
         const id = req.params.id;
         
         // Check if ID is valid ObjectId format
@@ -117,7 +149,7 @@ app.get('/movies/:id', async (req, res) => {
 
 // UPDATE - Update a movie by ID
 app.put('/movies/:id', async (req, res) => {
-    try {
+   try {
         const id = req.params.id;
         const updates = req.body;
         
@@ -170,14 +202,18 @@ app.delete('/movies/:id', async (req, res) => {
 });
 
 // Route to insert sample movie for testing
-app.post('/sample-movie', async (req, res) => {
+app.post('/sample-movie-insert', async (req, res) => {
     try {
         const result = await db.collection('movies').insertOne(sampleMovie);
-        res.status(201).json({
-            message: 'Sample movie inserted successfully',
-            id: result.insertedId,
-            movie: sampleMovie
-        });
+        res.redirect('/'); // Redirect to home page after adding
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+app.get('/sample-movie-insert', async (req, res) => {
+    try {
+        const result = await db.collection('movies').insertOne(sampleMovie);
+        res.redirect('/'); // Redirect to home page after adding
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
