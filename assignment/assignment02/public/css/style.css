@@ -14,6 +14,9 @@ img {
   max-width: 200px;
   border: 1px solid #ccc;
 }
+img .poster {
+	max-width: 200px; height: auto;
+}
 
 .notification .success {
 	color: green;
@@ -36,4 +39,43 @@ button.submit {
 
 .clearAll {
 	clear: both;
+}
+
+.padding8PX {
+	padding: 8px; 
+}
+
+section#viewMovieSection table {
+	border-collapse: collapse;
+}
+
+#viewMovieSection table tr {
+	border-bottom:2px solid #ccc;
+}
+#viewMovieSection table td {
+	padding: 8px; 
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.borderBottomGrey {
+	border-bottom: 1px solid #ccc;
+}
+
+.backBtn {
+	background: #007cba; color: white; padding: 10px 15px; text-decoration: none; margin-right: 10px;
+}
+
+.editBtn {
+	background: #28a745; color: white; padding: 10px 15px; text-decoration: none; margin-right: 10px;
+}
+
+.deleteBtn {
+	background: #dc3545; color: white; padding: 10px 15px; text-decoration: none;
+}
+
+ul .castList {
+	margin: 0; padding-left: 20px;
 }

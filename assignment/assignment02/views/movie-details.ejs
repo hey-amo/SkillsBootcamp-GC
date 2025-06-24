@@ -29,7 +29,7 @@
         }
     </script>
     
-    <section>
+    <section id="viewMovieSection">
         <h2><%= movie.title %></h2>
         
         <% if (movie.poster) { %>
@@ -37,44 +37,44 @@
         <% } %>
         
         <table>
-            <tr style="border-bottom: 1px solid #ccc;">
-                <td style="padding: 8px; font-weight: bold;">Title:</td>
-                <td style="padding: 8px;"><%= movie.title %></td>
+            <tr>
+                <td class="padding8PX bold">Title:</td>
+                <td class="padding8PX"><%= movie.title %></td>
             </tr>
             
             <% if (movie.year) { %>
-            <tr style="border-bottom: 1px solid #ccc;">
-                <td style="padding: 8px; font-weight: bold;">Year:</td>
-                <td style="padding: 8px;"><%= movie.year %></td>
+            <tr>
+                <td class="bold">Year:</td>
+                <td><%= movie.year %></td>
             </tr>
             <% } %>
             
             <% if (movie.director) { %>
-            <tr style="border-bottom: 1px solid #ccc;">
-                <td style="padding: 8px; font-weight: bold;">Director:</td>
-                <td style="padding: 8px;"><%= movie.director %></td>
+            <tr>
+                <td class="bold">Director:</td>
+                <td><%= movie.director %></td>
             </tr>
             <% } %>
             
             <% if (movie.type) { %>
-            <tr style="border-bottom: 1px solid #ccc;">
-                <td style="padding: 8px; font-weight: bold;">Type:</td>
-                <td style="padding: 8px;"><%= movie.type %></td>
+            <tr>
+                <td class="bold">Type:</td>
+                <td><%= movie.type %></td>
             </tr>
             <% } %>
             
             <% if (movie.imdbRating) { %>
-            <tr style="border-bottom: 1px solid #ccc;">
-                <td style="padding: 8px; font-weight: bold;">IMDB Rating:</td>
-                <td style="padding: 8px;"><%= movie.imdbRating %></td>
+            <tr>
+                <td class="bold">IMDB Rating:</td>
+                <td><%= movie.imdbRating %></td>
             </tr>
             <% } %>
             
             <% if (movie.cast && movie.cast.length > 0) { %>
-            <tr style="border-bottom: 1px solid #ccc;">
-                <td style="padding: 8px; font-weight: bold; vertical-align: top;">Cast:</td>
-                <td style="padding: 8px;">
-                    <ul style="margin: 0; padding-left: 20px;">
+            <tr>
+                <td class="bold">Cast:</td>
+                <td>
+                    <ul class="castList">
                         <% movie.cast.forEach(function(actor) { %>
                             <li><%= actor %></li>
                         <% }); %>
@@ -83,18 +83,20 @@
             </tr>
             <% } %>
             
-            <tr style="border-bottom: 1px solid #ccc;">
-                <td style="padding: 8px; font-weight: bold;">Movie ID:</td>
-                <td style="padding: 8px;"><code><%= movie._id %></code></td>
+            <tr>
+                <td class="bold">Movie ID:</td>
+                <td><code><%= movie._id %></code></td>
             </tr>
         </table>
-        
-        <div class="margin-top-gap clearAll">
-            <a href="/" style="background: #007cba; color: white; padding: 10px 15px; text-decoration: none; margin-right: 10px;">← Back to Movies</a>
-            <a href="/edit/<%= movie._id %>" style="background: #28a745; color: white; padding: 10px 15px; text-decoration: none; margin-right: 10px;">Edit Movie</a>
-            <a href="/delete/<%= movie._id %>" onclick="return confirm('Are you sure you want to delete this movie?')" style="background: #dc3545; color: white; padding: 10px 15px; text-decoration: none;">Delete Movie</a>
-        </div>
+    </section>
+    
+    <footer class="margin-top-gap clearAll">
+        <p>
+            <a href="/" class="backBtn">← Back to Movies</a>  
+            <a href="/edit/<%= movie._id %>" class="editBtn">Edit Movie</a> 
+            <a href="/delete/<%= movie._id %>" onclick="return confirm('Are you sure you want to delete this movie?')" class="deleteBtn">Delete Movie</a>
+        </p>
+    </footer>
 
-    </section>>
 </body>
 </html>
