@@ -55,6 +55,9 @@ section#viewMovieSection table {
 #viewMovieSection table td {
 	padding: 8px; 
 }
+#viewMovieSection input {
+	padding: 5px;
+}
 
 .bold {
 	font-weight: bold;
@@ -72,10 +75,26 @@ section#viewMovieSection table {
 	background: #28a745; color: white; padding: 10px 15px; text-decoration: none; margin-right: 10px;
 }
 
+.cancelBtn {
+	background: #6c757d; color: white; padding: 10px 20px; text-decoration: none;
+}
+
+.updateBtn {
+	background: #28a745; color: white; padding: 10px 20px; border: none; cursor: pointer; margin-right: 10px;
+}
+
 .deleteBtn {
 	background: #dc3545; color: white; padding: 10px 15px; text-decoration: none;
 }
 
 ul .castList {
 	margin: 0; padding-left: 20px;
+}
+
+section.currentData {
+	margin-top: 30px; padding-top: 20px; border-top: 1px solid #ccc;
+}
+
+.marginTop20 {
+	margin-top: 20px; 
 }

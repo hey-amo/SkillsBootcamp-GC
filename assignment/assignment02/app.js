@@ -252,8 +252,18 @@ app.put('/movies/:id', async (req, res) => {
     }
 });
 
+// Route to insert 1 sample movie for testing
+app.get('/insert-sample-movie', async (req, res) => {
+    try {
+        const result = await db.collection('movies').insertOne(sampleMovie);
+        res.redirect('/'); // Redirect to home page 
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // DELETE - Delete a movie by ID
-app.delete('/movies/:id', async (req, res) => {
+app.get('/delete/:id', async (req, res) => {
     try {
         const id = req.params.id;
         
@@ -267,25 +277,21 @@ app.delete('/movies/:id', async (req, res) => {
         if (result.deletedCount === 0) {
             return res.status(404).json({ error: 'Movie not found' });
         }
+    
         
-        res.json({
-            message: 'Movie deleted successfully',
-            deletedCount: result.deletedCount
-        });
+        // res.json({
+        //     message: 'Movie deleted successfully',
+        //     deletedCount: result.deletedCount
+        // });
+        let msg = "Movie deleted successfully"
+
+         res.redirect('/?success=' + msg);
+         //res.redirect('/'); // Redirect to home page 
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// Route to insert 1 sample movie for testing
-app.get('/insert-sample-movie', async (req, res) => {
-    try {
-        const result = await db.collection('movies').insertOne(sampleMovie);
-        res.redirect('/'); // Redirect to home page after adding
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
 
 // Initialize everything
 startServer();

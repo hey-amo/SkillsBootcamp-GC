@@ -16,37 +16,37 @@
         <h1>Edit Movie</h1>
     </header>
     
-    <section>
+    <section id="viewMovieSection">
         <div>
             <h2>Editing: <%= movie.title %></h2>
         
             <form action="/edit/<%= movie._id %>" method="POST">
             <table>
                 <tr>
-                    <td style="padding: 8px; font-weight: bold; vertical-align: top;">Title:</td>
-                    <td style="padding: 8px;">
-                        <input type="text" name="title" value="<%= movie.title || '' %>" style="width: 100%; padding: 5px;" required>
+                    <td class="bold">Title:</td>
+                    <td>
+                        <input type="text" name="title" value="<%= movie.title || '' %>" required>
                     </td>
                 </tr>
                 
                 <tr>
-                    <td style="padding: 8px; font-weight: bold; vertical-align: top;">Year:</td>
-                    <td style="padding: 8px;">
-                        <input type="number" name="year" value="<%= movie.year || '' %>" min="1800" max="2030" style="width: 100%; padding: 5px;">
+                    <td class="bold">Year:</td>
+                    <td>
+                        <input type="number" name="year" value="<%= movie.year || '' %>" min="1800" max="2030">
                     </td>
                 </tr>
                 
                 <tr>
-                    <td style="padding: 8px; font-weight: bold; vertical-align: top;">Director:</td>
-                    <td style="padding: 8px;">
-                        <input type="text" name="director" value="<%= movie.director || '' %>" style="width: 100%; padding: 5px;">
+                    <td class="bold">Director:</td>
+                    <td>
+                        <input type="text" name="director" value="<%= movie.director || '' %>">
                     </td>
                 </tr>
                 
                 <tr>
-                    <td style="padding: 8px; font-weight: bold; vertical-align: top;">Type:</td>
-                    <td style="padding: 8px;">
-                        <select name="type" style="width: 100%; padding: 5px;">
+                    <td class="bold">Type:</td>
+                    <td>
+                        <select name="type">
                             <option value="">Select Type</option>
                             <option value="Movie" <%= movie.type === 'Movie' ? 'selected' : '' %>>Movie</option>
                             <option value="Series" <%= movie.type === 'Series' ? 'selected' : '' %>>TV Series</option>
@@ -56,44 +56,42 @@
                 </tr>
                 
                 <tr>
-                    <td style="padding: 8px; font-weight: bold; vertical-align: top;">IMDB Rating:</td>
-                    <td style="padding: 8px;">
+                    <td class="bold">IMDB Rating:</td>
+                    <td>
                         <input type="text" name="imdbRating" value="<%= movie.imdbRating || '' %>" placeholder="e.g., 8.5" style="width: 100%; padding: 5px;">
                     </td>
                 </tr>
                 
                 <tr>
-                    <td style="padding: 8px; font-weight: bold; vertical-align: top;">Poster URL:</td>
-                    <td style="padding: 8px;">
+                    <td class="bold">Poster URL:</td>
+                    <td>
                         <input type="url" name="poster" value="<%= movie.poster || '' %>" placeholder="https://..." style="width: 100%; padding: 5px;">
                     </td>
                 </tr>
                 
                 <tr>
-                    <td style="padding: 8px; font-weight: bold; vertical-align: top;">Cast:</td>
-                    <td style="padding: 8px;">
-                        <textarea name="cast" rows="4" style="width: 100%; padding: 5px;" placeholder="Enter actor names separated by commas"><%= movie.cast && Array.isArray(movie.cast) ? movie.cast.join(', ') : '' %></textarea>
+                    <td class="bold">Cast:</td>
+                    <td>
+                        <textarea name="cast" rows="4" placeholder="Enter actor names separated by commas"><%= movie.cast && Array.isArray(movie.cast) ? movie.cast.join(', ') : '' %></textarea>
                         <small style="color: #666;">Enter actor names separated by commas</small>
                     </td>
                 </tr>
             </table>
             
-            <div style="margin-top: 20px;">
-                <button type="submit" style="background: #28a745; color: white; padding: 10px 20px; border: none; cursor: pointer; margin-right: 10px;">Update Movie</button>
-                <a href="/movie/<%= movie._id %>" style="background: #6c757d; color: white; padding: 10px 20px; text-decoration: none;">Cancel</a>
+            <div class="marginTop20">
+                <button type="submit" class="updateBtn">Update Movie</button>
+                <a href="/movie/<%= movie._id %>" class="cancelBtn">Cancel</a>
             </div>
             </form>
 
-            <section style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ccc;">
+            <section class="currentData">
                 <h3>Current Data:</h3>
-                <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
-                    <p><strong>Title:</strong> <%= movie.title %></p>
-                    <% if (movie.year) { %><p><strong>Year:</strong> <%= movie.year %></p><% } %>
-                    <% if (movie.director) { %><p><strong>Director:</strong> <%= movie.director %></p><% } %>
-                    <% if (movie.type) { %><p><strong>Type:</strong> <%= movie.type %></p><% } %>
-                    <% if (movie.imdbRating) { %><p><strong>IMDB Rating:</strong> <%= movie.imdbRating %></p><% } %>
-                    <% if (movie.cast && movie.cast.length > 0) { %><p><strong>Cast:</strong> <%= movie.cast.join(', ') %></p><% } %>
-                </div>
+                <p><strong>Title:</strong> <%= movie.title %></p>
+                <% if (movie.year) { %><p><strong>Year:</strong> <%= movie.year %></p><% } %>
+                <% if (movie.director) { %><p><strong>Director:</strong> <%= movie.director %></p><% } %>
+                <% if (movie.type) { %><p><strong>Type:</strong> <%= movie.type %></p><% } %>
+                <% if (movie.imdbRating) { %><p><strong>IMDB Rating:</strong> <%= movie.imdbRating %></p><% } %>
+                <% if (movie.cast && movie.cast.length > 0) { %><p><strong>Cast:</strong> <%= movie.cast.join(', ') %></p><% } %>           
             </section>
         </div>
     </section>
