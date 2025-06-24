@@ -10,32 +10,35 @@ const port = 3000;
 const url = 'mongodb://localhost:27017'; // MongoDB connection string
 const dbName = 'moviesdb';               // Database name
 
-
 // Set EJS as templating engine
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-// Parse JSON requests
+// Parse JSON requests and form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 let db;
 
-// Connect to MongoDB (modern async/await version)
-async function connectToMongoDB() {
+// Connect to MongoDB and start server
+async function startServer() {
     try {
         const client = await MongoClient.connect(url);
         db = client.db(dbName);
         console.log('Connected to MongoDB');
+        
+        // Start the server only after database connection is established
+        app.listen(port, () => {
+            console.log(`App running on http://localhost:${port}`);
+        });
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
         process.exit(1);
     }
 }
 
-// Initialize database connection
-connectToMongoDB();
+// Initialize everything
+startServer();
 
 // Movie Record Structure (example)
 const sampleMovie = {
@@ -54,23 +57,9 @@ const sampleMovie = {
     ]
 };
 
-// Debug route to see all movies
-app.get('/debug/movies', async (req, res) => {
+// HOME - Show HTML page with all movies
+app.get('/', async (req, res) => {
     try {
-        const movies = await db.collection('movies').find({}).toArray();
-        res.json({
-            count: movies.length,
-            movies: movies
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// HOME - Show all movies
-app.get('/', (req, res) => {    
-     try {
-        console.log('Simple Movie API is running');
         const movies = await db.collection('movies').find({}).toArray();
         res.render('movies', { 
             movies: movies,
@@ -85,10 +74,11 @@ app.get('/', (req, res) => {
     }
 });
 
-// CREATE - Insert a new movie
+// CREATE - Insert a new movie (handles both JSON and form data)
 app.post('/movies', async (req, res) => {
-     const movie = req.body;
     try {
+        const movie = req.body;
+        
         // Convert cast string to array if it exists
         if (movie.cast && typeof movie.cast === 'string') {
             movie.cast = movie.cast.split(',').map(actor => actor.trim());
@@ -125,9 +115,9 @@ app.get('/movies', async (req, res) => {
     }
 });
 
-// READ - Get a single movie by ID
+// READ - Get a single movie by ID (JSON API)
 app.get('/movies/:id', async (req, res) => {
-     try {
+    try {
         const id = req.params.id;
         
         // Check if ID is valid ObjectId format
@@ -147,9 +137,91 @@ app.get('/movies/:id', async (req, res) => {
     }
 });
 
+// READ - Get a single movie by ID (HTML view)
+app.get('/movie/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        // Check if ID is valid ObjectId format
+        if (!ObjectId.isValid(id)) {
+            return res.redirect('/?error=Invalid movie ID format');
+        }
+        
+        const movie = await db.collection('movies').findOne({ _id: new ObjectId(id) });
+        
+        if (!movie) {
+            return res.redirect('/?error=Movie not found');
+        }
+        
+        res.render('movie-details', { movie: movie });
+    } catch (error) {
+        res.redirect('/?error=' + error.message);
+    }
+});
+
+// GET - Show edit form for a movie
+app.get('/edit/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        // Check if ID is valid ObjectId format
+        if (!ObjectId.isValid(id)) {
+            return res.redirect('/?error=Invalid movie ID format');
+        }
+        
+        const movie = await db.collection('movies').findOne({ _id: new ObjectId(id) });
+        
+        if (!movie) {
+            return res.redirect('/?error=Movie not found');
+        }
+        
+        res.render('edit-movie', { movie: movie });
+    } catch (error) {
+        res.redirect('/?error=' + error.message);
+    }
+});
+
+// POST - Handle edit form submission
+app.post('/edit/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updates = req.body;
+        
+        // Check if ID is valid ObjectId format
+        if (!ObjectId.isValid(id)) {
+            return res.redirect('/?error=Invalid movie ID format');
+        }
+        
+        // Convert cast string to array if it exists
+        if (updates.cast && typeof updates.cast === 'string') {
+            updates.cast = updates.cast.split(',').map(actor => actor.trim()).filter(actor => actor.length > 0);
+        }
+        
+        // Remove empty fields
+        Object.keys(updates).forEach(key => {
+            if (updates[key] === '' || updates[key] === null || updates[key] === undefined) {
+                delete updates[key];
+            }
+        });
+        
+        const result = await db.collection('movies').updateOne(
+            { _id: new ObjectId(id) },
+            { $set: updates }
+        );
+        
+        if (result.matchedCount === 0) {
+            return res.redirect('/?error=Movie not found');
+        }
+        
+        res.redirect('/movie/' + id + '?success=Movie updated successfully');
+    } catch (error) {
+        res.redirect('/?error=' + error.message);
+    }
+});
+
 // UPDATE - Update a movie by ID
 app.put('/movies/:id', async (req, res) => {
-   try {
+    try {
         const id = req.params.id;
         const updates = req.body;
         
@@ -201,16 +273,8 @@ app.delete('/movies/:id', async (req, res) => {
     }
 });
 
-// Route to insert sample movie for testing
-app.post('/sample-movie-insert', async (req, res) => {
-    try {
-        const result = await db.collection('movies').insertOne(sampleMovie);
-        res.redirect('/'); // Redirect to home page after adding
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-app.get('/sample-movie-insert', async (req, res) => {
+// Route to insert 1 sample movie for testing
+app.get('/insert-sample-movie', async (req, res) => {
     try {
         const result = await db.collection('movies').insertOne(sampleMovie);
         res.redirect('/'); // Redirect to home page after adding
@@ -219,7 +283,5 @@ app.get('/sample-movie-insert', async (req, res) => {
     }
 });
 
-// App running
-app.listen(port, () => {
-    console.log(`App running on http://localhost:${port}`);
-});
+// Initialize everything
+startServer();
