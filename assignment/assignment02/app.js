@@ -15,24 +15,25 @@ app.use(express.json());
 let db;
 
 // Connect to MongoDB
-MongoClient.connect(url, { useUnifiedTopology: true }, (err, client) => {
-    if (err) {
+async function connectToMongoDB() {
+    try {
+        const client = await MongoClient.connect(url);
+        db = client.db(dbName);
+        console.log('Connected to MongoDB');
+    } catch (err) {
         console.error('Failed to connect to MongoDB', err);
-        return;
+        process.exit(1);
     }
+}
 
-    db = client.db(dbName);
-    console.log('Connected to MongoDB');
-});
+connectToMongoDB();
 
 
-// Movie Record
-const movie = {
+// Sample movie - Record structure
+const sampleMovie = {
     title: "Batman Begins",
     year: 2005,
     type: "Movie",
-    seasons: null,
-    episodes: null,
     director: "Christopher Nolan",
     imdbRating: "8.2",
     poster: "https://m.media-amazon.com/images/M/MV5BODIyMDdhNTgtNDlmOC00MjUxLWE2NDItODA5MTdkNzY3ZTdhXkEyXkFqcGc@._V1_SX300.jpg",
@@ -45,37 +46,144 @@ const movie = {
     ]
 };
 
+// Debug route to see all movies
+app.get('/debug/movies', async (req, res) => {
+    try {
+        const movies = await db.collection('movies').find({}).toArray();
+        res.json({
+            count: movies.length,
+            movies: movies
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-
-// # GET - Read:: List all movies
+// HOME - API status
 app.get('/', (req, res) => {
     res.send('Simple Movie API is running');
-
-    // List all movies from the movie db
 });
 
-// # PUT - Create:: movie
-app.post('/insert-movie/', (req, res) => {
-    // Insert a movie
+// CREATE - Insert a new movie
+app.post('/movies', async (req, res) => {
+    try {
+        const movie = req.body;
+        const result = await db.collection('movies').insertOne(movie);
+        res.status(201).json({
+            message: 'Movie created successfully',
+            id: result.insertedId,
+            movie: movie
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
-// # GET - Read:: Single a movie
-app.post('/read-movie/{id}', (req, res) => {
-    // Find a movie that matches the ID, if any
+// READ - Get all movies
+app.get('/movies', async (req, res) => {
+    try {
+        const movies = await db.collection('movies').find({}).toArray();
+        res.json({
+            count: movies.length,
+            movies: movies
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// READ - Get a single movie by ID
+app.get('/movies/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        // Check if ID is valid ObjectId format
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({ error: 'Invalid movie ID format' });
+        }
+        
+        const movie = await db.collection('movies').findOne({ _id: new ObjectId(id) });
+        
+        if (!movie) {
+            return res.status(404).json({ error: 'Movie not found' });
+        }
+        
+        res.json(movie);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// UPDATE - Update a movie by ID
+app.put('/movies/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updates = req.body;
+        
+        // Check if ID is valid ObjectId format
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({ error: 'Invalid movie ID format' });
+        }
+        
+        const result = await db.collection('movies').updateOne(
+            { _id: new ObjectId(id) },
+            { $set: updates }
+        );
+        
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ error: 'Movie not found' });
+        }
+        
+        res.json({
+            message: 'Movie updated successfully',
+            modifiedCount: result.modifiedCount
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE - Delete a movie by ID
+app.delete('/movies/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        // Check if ID is valid ObjectId format
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({ error: 'Invalid movie ID format' });
+        }
+        
+        const result = await db.collection('movies').deleteOne({ _id: new ObjectId(id) });
+        
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ error: 'Movie not found' });
+        }
+        
+        res.json({
+            message: 'Movie deleted successfully',
+            deletedCount: result.deletedCount
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Test insert
+app.post('/sample-movie', async (req, res) => {
+    try {
+        const result = await db.collection('movies').insertOne(sampleMovie);
+        res.status(201).json({
+            message: 'Sample movie inserted successfully',
+            id: result.insertedId,
+            movie: sampleMovie
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 
-// # PUT - Update:: Update a single movie
-app.post('/update-movie/{id}', (req, res) => {
-    // Find a movie that matches the ID, if any
-});
-
-// # GET - Delete:: Delete a single movie 
-app.get('/delete-movie/{id}', (req, res) => {
-    // Find a movie that matches the ID, then delete it, if it exists
-});
-
-
+// ------------------
 
 // # App running
 app.listen(port, () => {
