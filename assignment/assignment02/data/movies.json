@@ -1,8 +1,0 @@
-{
-	"_id": {
-		"$oid": "685a737354656d461c7a760e"
-	},
-	"title": "test movie",
-	"year": 2023,
-	"director": "Test director"
-}
