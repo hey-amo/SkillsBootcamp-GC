@@ -4,7 +4,7 @@
 
 On Mac, using Terminal
 
-### Setup
+### Setup
 
 - Updated Homebrew system
 - Installed nodejs via Homebrew
@@ -33,7 +33,8 @@ Opened a third terminal window, run the nodejs app.js
 See: `node-app-running.png` and `browser-01.png`
 
 
-## Screenshots
+### Screenshots
 
 `/mongodb-running.png` - This is a screenshot of mongodb running on the terminal with a simple insert test of a movie.
 
+`JS-App-Walkthrough.gif` - Animation
