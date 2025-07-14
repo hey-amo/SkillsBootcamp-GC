@@ -18,11 +18,19 @@ img .poster {
 	max-width: 200px; height: auto;
 }
 
-.notification .success {
-	color: green;
+.notification {
+	padding: 1em;
+	margin-top:2rem;
+	margin-bottom:2rem;
 }
-.notification .error {
+
+.notification.success {
+	color: green;
+	border: 1px solid green;
+}
+.notification.error {
 	color: red;
+	border:1px solid red;
 }
 
 .movie-info {
